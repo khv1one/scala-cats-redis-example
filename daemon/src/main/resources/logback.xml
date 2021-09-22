@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{"HH:mm:ss"} %highlight(%-5level) %yellow(%X{request_id}) %cyan(%logger{15}) - %message%n%xException{5}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="application" level="INFO" />
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

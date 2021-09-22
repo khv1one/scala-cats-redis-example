@@ -1,1 +1,1 @@
-# scala-cats-redis-example
+#
