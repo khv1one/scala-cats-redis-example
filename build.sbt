@@ -10,7 +10,7 @@ lazy val common = project.in(file("base/common"))
   .settings(version := "0.1")
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(redisson, catsEffect)
+    libraryDependencies ++= Seq(logback, redisson, cats, catsEffect)
   )
 
 lazy val serviceRpc = project.in(file("base/rpc"))
@@ -18,9 +18,8 @@ lazy val serviceRpc = project.in(file("base/rpc"))
   .settings(version := "0.1")
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq()
+    libraryDependencies ++= Seq(endpoints, endpointsCirce)
   )
-  .dependsOn()
 
 lazy val service = project.in(file("service"))
   .enablePlugins(DockerPlugin)
@@ -28,8 +27,9 @@ lazy val service = project.in(file("service"))
   .settings(version := "0.1")
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq()
+    libraryDependencies ++= Seq(pureConfig, logCatsSlf4, http4sServer, http4sEndpointsServer)
   )
+  .dependsOn(common, serviceRpc)
 
 lazy val daemon = project.in(file("daemon"))
   .enablePlugins(DockerPlugin)
@@ -37,7 +37,7 @@ lazy val daemon = project.in(file("daemon"))
   .settings(version := "0.1")
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(redisson, cats, catsEffect, pureConfig, fs2, logback, logCatsSlf4)
+    libraryDependencies ++= Seq(pureConfig, fs2, logCatsSlf4)
   )
   .dependsOn(common)
 
