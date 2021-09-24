@@ -3,8 +3,8 @@ package example.daemon.service
 import cats.effect.{LiftIO, Sync}
 import cats.implicits.{catsSyntaxApplicativeError, catsSyntaxApply, catsSyntaxFlatMapOps, catsSyntaxOptionId, toFlatMapOps, toFunctorOps, toTraverseFilterOps}
 import example.daemon.config.Config
-import example.daemon.utils.Helpers.applyOrEmptyF
-import example.daemon.utils.Syntax.IOExtended
+import example.utils.Helpers.applyOrEmptyF
+import example.utils.Syntax.IOExtended
 import example.models.{RedisCodec, RedisEvent}
 import example.redis.RedisClient
 import org.redisson.api.StreamMessageId

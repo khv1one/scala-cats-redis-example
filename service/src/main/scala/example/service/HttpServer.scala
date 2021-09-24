@@ -16,7 +16,7 @@ object HttpServer {
   )(implicit ec: ExecutionContext): Resource[F, Server] = {
     BlazeServerBuilder[F](ec)
       .bindHttp(config.port, config.host)
-      .withHttpApp(routes.allRoutes)
+      .withHttpApp(routes.endpoints.orNotFound)
       .resource
   }
 }

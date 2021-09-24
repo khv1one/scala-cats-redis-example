@@ -1,4 +1,4 @@
-package example.daemon.utils
+package example.utils
 
 import cats.effect.{IO, LiftIO}
 

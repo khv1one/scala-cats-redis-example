@@ -5,6 +5,7 @@ import cats.effect.std.Console
 import cats.implicits._
 import example.daemon.config.Config
 import example.daemon.errors.CustomErrors
+import example.daemon.service.api.EventServiceApi
 import example.daemon.service.{LogicServiceAlg, RedisService}
 import example.models.{ExampleEventBody, RedisEvent}
 import fs2.Stream
@@ -14,7 +15,8 @@ import scala.concurrent.duration.DurationInt
 
 class EventWorker[F[_] : Temporal : Console](
   logicService: LogicServiceAlg[F],
-  redisService: RedisService[F]
+  redisService: RedisService[F],
+  eventService: EventServiceApi[F]
 )(implicit L: Logger[F], config: Config) {
 
   private val name = getClass.getSimpleName
@@ -50,12 +52,13 @@ class EventWorker[F[_] : Temporal : Console](
             logicService.run(event.body)
               .>>(redisService.ackTask(event.id))
               .>>(L.info(s"End Tasks ${event.idString} Successful"))
+              .>>(eventService.setEventResult(event.idString, "Successful"))
               .handleErrorWith(error => handleError(error, event))
           )
       )
 
   private def handleError[T](error: Throwable, event: RedisEvent[T]): F[Unit] = {
-    error match {
+    (error match {
       case error: CustomErrors =>
         if (error.isRecoverable) {
           L.error(s"End Tasks ${event.idString} with custom ${error.getLocalizedMessage}")
@@ -64,6 +67,7 @@ class EventWorker[F[_] : Temporal : Console](
             .>>(redisService.ackTask(event.id))
         }
       case error => L.error(s"End Tasks ${event.idString} with error ${error.getLocalizedMessage}")
-    }
+    })
+      .>>(eventService.setEventResult(event.idString, "Error"))
   }
 }

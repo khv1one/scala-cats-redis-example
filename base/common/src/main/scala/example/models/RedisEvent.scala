@@ -14,19 +14,19 @@ object RedisCodec {
 }
 
 case class ExampleEventBody(
-  group: String,
   message: String,
   action: String,
+  group: String,
 )
 
 object ExampleEventBody {
   implicit val redisCodec: RedisCodec[ExampleEventBody] = new RedisCodec[ExampleEventBody] {
     override def fromRedisKeys: Map[String, String] => Try[ExampleEventBody] = { keys =>
       (for {
-        group <- keys.get("group")
         message <- keys.get("message")
         action <- keys.get("action")
-      } yield ExampleEventBody(group, message, action))
+        group <- keys.get("group")
+      } yield ExampleEventBody(message = message, action = action, group = group))
         .map(Success(_))
         .getOrElse(Failure(new NoSuchElementException(s"Can`t parse $keys to ExampleTask, event ack")))
     }

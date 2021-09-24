@@ -1,8 +1,6 @@
 import Dependencies._
 
 ThisBuild / scalaVersion := "2.13.6"
-ThisBuild / organization := "com.example"
-ThisBuild / organizationName := "example"
 
 lazy val common = project.in(file("base/common"))
   .enablePlugins(DockerPlugin)
@@ -18,7 +16,7 @@ lazy val serviceRpc = project.in(file("base/rpc"))
   .settings(version := "0.1")
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(endpoints, endpointsCirce)
+    libraryDependencies ++= Seq(circe, circeGeneric, circeGenericExtras, endpoints, endpointsCirce)
   )
 
 lazy val service = project.in(file("service"))
@@ -37,9 +35,9 @@ lazy val daemon = project.in(file("daemon"))
   .settings(version := "0.1")
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(pureConfig, fs2, logCatsSlf4)
+    libraryDependencies ++= Seq(pureConfig, fs2, logCatsSlf4, http4sClient, http4sEndpointsClient)
   )
-  .dependsOn(common)
+  .dependsOn(common, serviceRpc)
 
 val options = scalacOptions ++= Seq(
   "-language:higherKinds",
