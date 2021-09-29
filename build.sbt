@@ -4,38 +4,48 @@ ThisBuild / scalaVersion := "2.13.6"
 
 lazy val common = project.in(file("base/common"))
   .enablePlugins(DockerPlugin)
-  .settings(name := "Common")
-  .settings(version := "0.1")
+  .enablePlugins(JavaAppPackaging)
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(logback, redisson, cats, catsEffect)
+    name := "Common",
+    version := "0.1",
+    libraryDependencies ++= Seq(logback, redisson, cats, catsEffect),
+    Universal / packageName := "common"
   )
 
 lazy val serviceRpc = project.in(file("base/rpc"))
-  .settings(name := "Service Rpc")
-  .settings(version := "0.1")
+  .enablePlugins(DockerPlugin)
+  .enablePlugins(JavaAppPackaging)
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(circe, circeGeneric, circeGenericExtras, endpoints, endpointsCirce)
+    name := "Service Rpc",
+    version := "0.1",
+    libraryDependencies ++= Seq(circe, circeGeneric, circeGenericExtras, endpoints, endpointsCirce),
+    Universal / packageName := "rpc"
   )
+  .enablePlugins(JavaAppPackaging)
 
 lazy val service = project.in(file("service"))
   .enablePlugins(DockerPlugin)
-  .settings(name := "Service API")
-  .settings(version := "0.1")
+  .enablePlugins(JavaAppPackaging)
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(pureConfig, logCatsSlf4, http4sServer, http4sEndpointsServer)
+    name := "Service API",
+    version := "0.1",
+    libraryDependencies ++= Seq(pureConfig, logCatsSlf4, http4sServer, http4sEndpointsServer),
+    Universal / packageName := "service"
   )
   .dependsOn(common, serviceRpc)
 
 lazy val daemon = project.in(file("daemon"))
   .enablePlugins(DockerPlugin)
-  .settings(name := "Redis Daemon")
-  .settings(version := "0.1")
+  .enablePlugins(JavaAppPackaging)
   .settings(options)
   .settings(
-    libraryDependencies ++= Seq(pureConfig, fs2, logCatsSlf4, http4sClient, http4sEndpointsClient)
+    name := "Redis Daemon",
+    version := "0.1",
+    libraryDependencies ++= Seq(pureConfig, fs2, logCatsSlf4, http4sClient, http4sEndpointsClient),
+    Universal / packageName := "daemon"
   )
   .dependsOn(common, serviceRpc)
 

@@ -17,6 +17,7 @@ class RedisClusterClient(hosts: Seq[String]) extends RedisClient {
 
     config
       .useClusterServers()
+      .setCheckSlotsCoverage(false)
       .setNodeAddresses(hosts.map(host => s"redis://$host").asJava)
 
     config

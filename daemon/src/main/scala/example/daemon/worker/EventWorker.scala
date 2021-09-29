@@ -1,7 +1,6 @@
 package example.daemon.worker
 
 import cats.effect.Temporal
-import cats.effect.std.Console
 import cats.implicits._
 import example.daemon.config.Config
 import example.daemon.errors.CustomErrors
@@ -13,7 +12,7 @@ import org.typelevel.log4cats.Logger
 
 import scala.concurrent.duration.DurationInt
 
-class EventWorker[F[_] : Temporal : Console](
+class EventWorker[F[_] : Temporal](
   logicService: LogicServiceAlg[F],
   redisService: RedisService[F],
   eventService: EventServiceApi[F]
