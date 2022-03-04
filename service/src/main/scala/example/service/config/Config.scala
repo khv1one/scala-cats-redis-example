@@ -11,7 +11,7 @@ object Config {
 }
 
 case class RedisConfig(
-  hosts: Seq[String],
+  hosts: String,
   dataBus: String
 )
 

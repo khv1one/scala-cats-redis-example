@@ -96,7 +96,7 @@ services:
     expose:
       - 8080
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
       - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
     command:
@@ -112,6 +112,6 @@ services:
       - redis-cluster-init
     environment:
       - 'REDIS_NODES=redis-node-0 redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5'
-      - 'SERVICE_HOST=service'
+      - 'SERVICE_HOST=http://service'
     command:
       -Dconfig.resource=application.conf -Dlogger.resource=logback.xml

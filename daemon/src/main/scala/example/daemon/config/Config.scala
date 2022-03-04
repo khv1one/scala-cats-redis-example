@@ -15,7 +15,7 @@ object Config {
 }
 
 case class RedisConfig(
-  hosts: Seq[String],
+  hosts: String,
   recoverCount: Int,
   claimIdleTime: FiniteDuration,
   batchSize: Int,

@@ -10,7 +10,7 @@ trait RedisClient extends RedisOperationsIO  {
   protected val client: RedissonClient
 }
 
-class RedisClusterClient(hosts: Seq[String]) extends RedisClient {
+class RedisClusterClient(hosts: String) extends RedisClient {
 
   private val config: Config = {
     val config = new Config()
@@ -18,7 +18,7 @@ class RedisClusterClient(hosts: Seq[String]) extends RedisClient {
     config
       .useClusterServers()
       .setCheckSlotsCoverage(false)
-      .setNodeAddresses(hosts.map(host => s"redis://$host").asJava)
+      .setNodeAddresses(hosts.split(',').map(host => s"redis://$host").toList.asJava)
 
     config
   }
@@ -27,5 +27,5 @@ class RedisClusterClient(hosts: Seq[String]) extends RedisClient {
 }
 
 object RedisClusterClient {
-  def apply(hosts: Seq[String]): RedisClusterClient = new RedisClusterClient(hosts)
+  def apply(hosts: String): RedisClusterClient = new RedisClusterClient(hosts)
 }
