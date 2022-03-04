@@ -1,6 +1,6 @@
 import Dependencies._
 
-ThisBuild / scalaVersion := "2.13.6"
+ThisBuild / scalaVersion := "2.13.8"
 
 lazy val common = project.in(file("base/common"))
   .enablePlugins(DockerPlugin)
